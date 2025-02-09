@@ -232,7 +232,7 @@ get_aur_packages() {
       pkg_clean=$(echo "$pkg" | sed 's/#.*$//' | xargs)
       if ! pacman -Ss "$pkg_clean" &> /dev/null; then
         recho "正在同步 AUR 包 $pkg 到本地仓库……" "Syncing AUR package $pkg to local repository..."
-        sudo aur sync -d "$REPO_NAME" --root "$LOCAL_REPO_DIR" --noconfirm --no-view --pacman-conf "$PACMAN_CONF" "$pkg" || {
+        aur sync -d "$REPO_NAME" --root "$LOCAL_REPO_DIR" --noconfirm --no-view --pacman-conf "$PACMAN_CONF" "$pkg" || {
           recho "无法同步 AUR 包: $pkg" "Failed to sync AUR package: $pkg"
           exit 1
         }
