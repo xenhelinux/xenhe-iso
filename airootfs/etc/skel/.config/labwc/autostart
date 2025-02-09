@@ -1,0 +1,19 @@
+# Autostart file
+
+# Set background color.
+swaybg -c '#78909C' >/dev/null 2>&1 &
+
+# Launch a panel.
+waybar >/dev/null 2>&1 &
+
+# Enable notifications. Typically GNOME/KDE application notifications go
+# through the org.freedesktop.Notifications D-Bus API and require a client such
+# as mako to function correctly. Thunderbird is an example of this.
+mako >/dev/null 2>&1 &
+
+# File manager daemon
+#pcmanfm-qt -d >/dev/null 2>&1 &
+
+# Music Player Daemon
+
+mpd >/dev/null 2>&1 &

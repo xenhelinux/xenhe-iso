@@ -1,0 +1,11 @@
+[Desktop Entry]
+Exec=pcmanfm-qt menu://applications
+Icon=application-menu
+Terminal=false
+Type=Application
+Categories=Utility;Application;
+
+Name=​All applications
+Comment=​Open the applications menu
+Name[zh_CN]=​所有应用程序
+Comment[zh_CN]=​打开应用程序菜单

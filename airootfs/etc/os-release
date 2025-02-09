@@ -1,0 +1,12 @@
+NAME="XenHe Linux"
+PRETTY_NAME="XenHe Linux"
+ID=xenhelinux
+ID-LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;23;147;209"
+HOME_URL="https://XenHe.org/"
+DOCUMENTATION_URL="https://wiki.XenHe.org/"
+SUPPORT_URL="https://bbs.XenHe.org/"
+BUG_REPORT_URL="https://gitlab.XenHe.org/groups/XenHe/-/issues"
+PRIVACY_POLICY_URL="https://terms.XenHe.org/docs/privacy-policy/"
+LOGO=xenhe-logo
