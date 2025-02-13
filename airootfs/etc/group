@@ -1,0 +1,16 @@
+root:x:0:root
+sys:x:3:bin,xenhe
+network:x:90:xenhe
+power:x:98:xenhe
+adm:x:999:xenhe
+wheel:x:998:xenhe
+uucp:x:987:xenhe
+optical:x:990:xenhe
+rfkill:x:983:xenhe
+video:x:986:xenhe
+storage:x:988:xenhe
+audio:x:995:xenhe
+users:x:985:xenhe
+nopasswdlogin:x:966:xenhe
+autologin:x:967:xenhe
+xenhe:x:1000:

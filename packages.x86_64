@@ -155,12 +155,12 @@ xf86-video-vmware
 
 noto-fonts-cjk
 noto-fonts-emoji
-ttf-tabler-icons
+#ttf-tabler-icons(AUR disable for test)
 ttf-font-awesome
 
 ## Look
 
-papirus-icon-theme
+#papirus-icon-theme(disable for test)
 adwaita-cursors
 #mcmojave-cursors(AUR)
 
@@ -171,8 +171,8 @@ labwc
 mako
 cliphist
 swaybg
-#swayidle
-#swaylock
+#swayidle(disable for test)
+#swaylock(disable for test)
 
 waybar
 wofi
@@ -180,7 +180,7 @@ wofi
 ## Display manager
 
 greetd
-greetd-tuigreet
+#greetd-tuigreet(disable for test)
 greetd-ddlm-git
 
 ## Music Player Daemon
@@ -201,13 +201,14 @@ wireplumber
 bauh
 foot
 btop
-yad
 qt6-wayland
 featherpad
 netsurf
 
 ### File management
 
+#dfiles(not in repo)
+yad
 fuse3
 jmtpfs
 udisks2
