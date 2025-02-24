@@ -155,7 +155,7 @@ xf86-video-vmware
 
 noto-fonts-cjk
 noto-fonts-emoji
-#ttf-tabler-icons(AUR disable for test)
+#ttf-tabler-icons(AUR, disable for test)
 ttf-font-awesome
 
 ## Look
@@ -180,8 +180,9 @@ wofi
 ## Display manager
 
 greetd
-#greetd-tuigreet(disable for test)
-greetd-ddlm-git
+greetd-gtkgreet
+#greetd-tuigreet(works, disable for test)
+#greetd-ddlm-git(disable for test)
 
 ## Music Player Daemon
 
