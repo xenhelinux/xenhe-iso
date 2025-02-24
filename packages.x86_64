@@ -182,7 +182,7 @@ wofi
 greetd
 greetd-gtkgreet
 #greetd-tuigreet(works, disable for test)
-#greetd-ddlm-git(disable for test)
+#greetd-ddlm-git(seems does not work, disable for test)
 
 ## Music Player Daemon
 
