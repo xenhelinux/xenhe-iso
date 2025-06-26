@@ -5,49 +5,49 @@
 # 依赖：archiso aurutils reflector
 # dependencies: archiso aurutils reflector
 
-# 设置定量
-## 当前脚本所在目录
+# 设置定量 | Quantities
+## 当前脚本所在目录 | Script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-## 构建目录
+## 构建目录 | Archiso build directory
 BUILD_DIR=$SCRIPT_DIR/build
-## 本地仓库名称
+## 本地仓库名称 | Local repository name
 REPO_NAME=local-repo
-## 本地仓库目录
+## 本地仓库目录 | Local repository directory
 LOCAL_REPO_DIR=$BUILD_DIR/$REPO_NAME
-## 本地仓库数据库文件
+## 本地仓库数据库文件 | Local repository database file
 LOCAL_REPO_PATH=$LOCAL_REPO_DIR/$REPO_NAME.db.tar.gz
-## archiso 工作目录
+## archiso 工作目录 | Archiso working directory
 ARCHISO_BUILD_DIR=$BUILD_DIR/archiso-build
-## 输出目录
+## 输出目录 | Output directory
 OUTPUT_DIR=$SCRIPT_DIR/target
-## 进度文件
+## 进度文件 | Progress file
 PROGRESS_FILE=$BUILD_DIR/progress.log
-## pacman.conf 文件
+## pacman.conf 文件 | pacman.conf file
 PACMAN_CONF=$BUILD_DIR/pacman.conf
-## mirrorlist 文件
+## mirrorlist 文件 | Mirrorlist file
 MIRRORLIST=$BUILD_DIR/mirrorlist
-## 当前语言
-CURRENT_LANG=0
-## 是否自动选择
+## 当前语言 | Current language
+CURRENT_LANG=0 # 0: en-US, 1: zh-Hans-CN
+## 是否自动选择 | Auto select mirror
 NO_CONFIRM=0
-## 无效参数
+## 无效参数 | Invalid input
 INVALID_INPUT=""
 
-# 启用严格错误检查
+# 启用严格错误检查 | Strict error checking
 set -euo pipefail
 
-# 本地化
+# 本地化 | Localization
 recho() {
   if [ $CURRENT_LANG == 1 ]; then
-    ### zh-Hans
+    ## zh-Hans-CN
     echo $1;
   else
-    ### en-US
+    ## en-US
     echo $2;
   fi
 }
 
-# 错误处理函数
+# 错误处理函数 | Error handling function
 handle_error() {
   local lineno=$1
   local msg=$2
@@ -55,13 +55,13 @@ handle_error() {
   exit 1
 }
 
-# 设置错误捕获
+# 设置错误捕获 | Error handling trap
 trap 'handle_error ${LINENO} "$BASH_COMMAND"' ERR
 
-# 语言检测
+# 语言检测 | Language detection
 if [ $(echo ${LANG/_/-} | grep -Ei "\\b(zh|cn)\\b") ]; then CURRENT_LANG=1;  fi
 
-# 创建 pacman.conf 文件
+# 创建 pacman.conf 文件 | Create pacman.conf file
 create_pacman_conf() {
   if [[ ! -f "$PROGRESS_FILE" ]] || [[ ! -f "$PACMAN_CONF" ]] || ! grep -q "1 创建 pacman.conf 文件" "$PROGRESS_FILE"; then
     cat << EOF > "$PACMAN_CONF"
@@ -180,7 +180,7 @@ EOF
   fi
 }
 
-# 更新软件源
+# 更新软件源 | Update software sources
 update_mirrorlist() {
   recho "正在更新软件源……" "Updating mirrorlist..."
   reflector --sort rate --threads 128 --save $MIRRORLIST || {
@@ -189,15 +189,15 @@ update_mirrorlist() {
   }
 }
 
-# 提取并准备 AUR 包
+# 提取并准备 AUR 包 | Extract and prepare AUR packages
 get_aur_packages() {
-  # 确保 packages.x86_64 文件存在
+  # 确保 packages.x86_64 文件存在 | Ensure packages.x86_64 file exists
   if [[ ! -f "$SCRIPT_DIR/packages.x86_64" ]]; then
     recho "错误：找不到 packages.x86_64 文件" "Error: packages.x86_64 file not found"
     exit 1
   fi
 
-  # 初始化本地 AUR 仓库
+  # 初始化本地 AUR 仓库 | Initialize local AUR repository
   if [[ ! -f "$PROGRESS_FILE" ]] || [[ ! -d "$BUILD_DIR/blankdb" ]] || ! grep -q "2 初始化本地 AUR 仓库" "$PROGRESS_FILE"; then
     recho "正在初始化本地 AUR 仓库..." "Initializing local AUR repository..."
     if [[ -d "$BUILD_DIR/blankdb" ]]; then
@@ -220,14 +220,14 @@ get_aur_packages() {
     echo "2 初始化本地 AUR 仓库" >> "$PROGRESS_FILE"
   fi
 
-  # 处理 packages.x86_64 中 AUR 包的流程
+  # 处理 packages.x86_64 中 AUR 包的流程 | Processing the flow of AUR packages in packages.x86_64
   if [[ ! -f "$PROGRESS_FILE" ]] || [[ ! -d "$LOCAL_REPO_DIR" ]] || ! grep -q "3 处理 packages.x86_64 中 AUR 包的流程" "$PROGRESS_FILE"; then
     recho "正在处理 packages.x86_64 文件..." "Processing packages.x86_64 file..."
     while read -r pkg; do
-      # 跳过空行和注释
+      # 跳过空行和注释 | Skip empty lines and comments
       [[ -z "$pkg" || "$pkg" == \#* ]] && continue
       
-      # 判断是否是 AUR 包并同步
+      # 判断是否是 AUR 包并同步 | Determine whether it is an AUR package and synchronize
       recho "正在处理包: $pkg" "Processing package: $pkg"
       pkg_clean=$(echo "$pkg" | sed 's/#.*$//' | xargs)
       if ! pacman -Ss "$pkg_clean" &> /dev/null; then
@@ -242,7 +242,7 @@ get_aur_packages() {
   fi
 }
 
-# 处理传入参数
+# 处理传入参数 | Processing input parameters
 for i in $@; do
   if [ "$i" == "--noconfirm" ]; then
     NO_CONFIRM=1
@@ -263,7 +263,7 @@ if [ -n "$INVALID_INPUT" ]; then
   exit 1
 fi
 
-# 检查进度文件是否存在
+# 检查进度文件是否存在 | Check if the progress file exists
 if [[ ! -f "$PROGRESS_FILE" ]] || ! grep -q "0 初始化" "$PROGRESS_FILE"; then
   if [ ! -d "$BUILD_DIR" ]; then
     mkdir -p "$BUILD_DIR"
@@ -292,24 +292,24 @@ else
   fi
 fi
 
-# 创建构建目录
+# 创建构建目录 | Create build directory
 if [ ! -d "$ARCHISO_BUILD_DIR" ]; then
   mkdir -p "$ARCHISO_BUILD_DIR"
 fi
 
-# 检查输出目录是否存在
+# 检查输出目录是否存在 | Check if the output directory exists
 if [ ! -d "$OUTPUT_DIR" ]; then
   mkdir -p "$OUTPUT_DIR"
 fi
 
-# 创建 pacman.conf 文件
+# 创建 pacman.conf 文件 | Create pacman.conf file
 create_pacman_conf
 
-# 询问用户是否需要更新软件源
+# 询问用户是否需要更新软件源 | Ask the user whether they need to update the software source
 if [[ ! -f "$MIRRORLIST" ]]; then
   update_mirrorlist
 else
-  # 处理 --noconfirm
+  # 处理 --noconfirm | Process --noconfirm
   if [[ $NO_CONFIRM -eq 1 ]]; then
     recho "自动选择不更新软件源（--noconfirm）。" "Automatically choosing not to update mirrorlist (--noconfirm)."
     recho "保留现有软件源。" "Keep the existing mirrorlist."
@@ -322,9 +322,9 @@ else
   fi
 fi
 
-# 提取并准备 AUR 包
+# 提取并准备 AUR 包 | Extract and prepare AUR packages
 get_aur_packages
 
-# 运行 mkarchiso 命令以编译 archiso
+# 运行 mkarchiso 命令以编译 archiso | Run the mkarchiso command to compile archiso
 recho "正在编译 ISO 文件……" "Compiling ISO file..."
 sudo mkarchiso -v -C "$PACMAN_CONF" -w "$ARCHISO_BUILD_DIR" -o "$OUTPUT_DIR" "$SCRIPT_DIR"
