@@ -220,9 +220,19 @@ get_aur_packages() {
     echo "2 初始化本地 AUR 仓库" >> "$PROGRESS_FILE"
   fi
 
+  # 安装 archlinuxcn 源的钥 | Install the key of archlinuxcn source
+  sudo pacman-key --lsign-key "farseerfc@archlinux.org" || {
+    recho "无法签名 archlinuxcn 源的钥" "Failed to sign the key of archlinuxcn source"
+    exit 1
+  }
+  # sudo pacman -Sy archlinuxcn-keyring --noconfirm || {
+  #   recho "无法安装 archlinuxcn 源的钥" "Failed to install the key of archlinuxcn source"
+  #   exit 1
+  # }
+
   # 处理 packages.x86_64 中 AUR 包的流程 | Processing the flow of AUR packages in packages.x86_64
   if [[ ! -f "$PROGRESS_FILE" ]] || [[ ! -d "$LOCAL_REPO_DIR" ]] || ! grep -q "3 处理 packages.x86_64 中 AUR 包的流程" "$PROGRESS_FILE"; then
-    recho "正在处理 packages.x86_64 文件..." "Processing packages.x86_64 file..."
+    recho "正在处理 packages.x86_64 文件……" "Processing packages.x86_64 file..."
     while read -r pkg; do
       # 跳过空行和注释 | Skip empty lines and comments
       [[ -z "$pkg" || "$pkg" == \#* ]] && continue
